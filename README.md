@@ -1,6 +1,6 @@
 # Traveller #
 
-Traveller is a translation and token replacement wrapper module for node, using node-gettext but providing a cleaner and more javascript-ish interface.
+Traveller is a translation and token replacement wrapper module for node, based around node-gettext but providing a cleaner and more javascript-ish interface. It is also platform-independent, so can be run in the browser with browserify as well as in nodejs.
 
 *This is work in progress* You are welcome to browse the code but please don't use it or ask for support until this message is removed.
 
