@@ -1,15 +1,10 @@
 gettext=require 'gettext'
 printf=require 'printf'
-http=require 'http-browserify'
-url=require 'url'
-
-getLocaleJSON = (path, callback)->
-  http.get 'path' : path, (result)->
-    result.on 'data', (buf) ->
-      callback JSON.parse buf
 
 module.exports =
-  localeBase: 'locales'
+  rootPath: './locales'
+  loader: null
+  format: 'json'
   # give direct access to the real printf and gettext modules.
   printf: printf
   gettext: gettext
@@ -22,25 +17,35 @@ module.exports =
     opts.plural ?= undefined
     opts.count ?= undefined
     opts.category ?= undefined
-    tokens ?= {}
     trans = gettext.dcnpgettext opts.domain,opts.context,msgid,opts.plural,opts.count,opts.category
-    repl = @printf trans,tokens
-    return repl
-  # set the directory to load locale data from
-  setLocaleBase: (@localeBase) ->
+    if tokens
+      # replace tokens.
+      trans = printf trans, tokens
+    return trans
+  # set options for automatic locale loading.
+  init: (rootPath, loader, format) ->
+    if format == 'json'
+      @format=format
+    else
+      throw new Error "Only json format supported at this time."
+    if typeof loader == 'function'
+      @loader=loader
+    else
+      throw new Error "'loader' must be a function taking a pathname and a callback"
+    @rootPath=rootPath
   # convenience function to load a language file for a locale
   loadLocale: (locale,callback) ->
-    urlData=url.parse(document.URL)
-    pathbits=urlData.pathname.split "/"
-    docPath=pathbits[0...pathbits.length-1].join "/"
+    localePath="#{@rootPath}/#{locale}/messages.json"
     #console.log "parsed path: #{docPath}"
-    loader=(cb)->
+    gtLoader=(cb)->
+      # loader function to pass to node-gettext.
       # loadLanguageFile is expecting a function which passes JSON data to a callback. cb is the callback which it passes in.
-      #console.log "called back. cb=#{cb}"
-      getLocaleJSON "#{docPath}/locales/#{locale}/messages.json", (json) ->
-        #console.log "json loaded"
-        #console.log json
-        cb(json)
+      console.log "called back. cb:"
+      console.log cb
+      @loader localePath, (json)->
+        console.log "json loaded"
+        console.log json
+        cb(JSON.parse json)
     gettext.loadLanguageFile loader, locale, callback
   # convenience function to set and load a given locale.
   setLocale: (locale) ->
