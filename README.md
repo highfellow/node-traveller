@@ -18,6 +18,6 @@ At the moment, Traveller uses a slightly adapted version of [node-gettext](https
 * loadLocale(locale,callback) - load a locale file automatically, using the options set in 'init'.
 * loadLocaleData(fileData, locale, callback) - load raw locale data manually.
 * setLocale(locale) - set the current locale.
-* t(string | [string, plural-string], {options...}, {tokens})
+* t(string, {options...}, {tokens}) - translate a string. Options are: domain, context, plural, count, and category (see the [gnu gettext](http://www.gnu.org/software/gettext/) documentation for details). Tokens contains tokens to replace in the translated string.
 
 
