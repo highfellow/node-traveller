@@ -10,7 +10,7 @@ Traveller is a translation and token replacement wrapper module for node, based 
 * [Nodejs](http://nodejs.org/) is a popular framework for writing javascript applications, based around a server-side javascript engine. There is a [gettext module](https://github.com/DanielBaulig/node-gettext) for node already, but this suffers from the above problems. It also only works server-side, and is not directly suitable for use in the browser. With Traveller, the calling code provides a file loader function which can load locale files from a given path (either filesystem or http). This makes it independent of any particular platform or protocol.
 * Usually, locale data will be kept in some kind of 'path/locale/file.[po|json]' structure, where path is either a filesystem path or an http path. Traveller provides a neat interface for loading language files automatically by locale name.
 
-At the moment, Traveller uses a [slightly adapted version](https://github.com/highfellow/node-gettext) of [node-gettext], but at some point this code may be merged into the main module.
+At the moment, Traveller uses a [slightly adapted version](https://github.com/highfellow/node-gettext) of [node-gettext](https://github.com/DanielBaulig/node-gettext), but at some point this code may be merged into the main module.
 
 ## Interface ##
 
