@@ -2,7 +2,7 @@
 
 Traveller is a translation and token replacement wrapper module for node, based around node-gettext but providing a cleaner and more javascript-ish interface. It is also platform-independent, so can be run in the browser with browserify as well as in nodejs.
 
-*This is work in progress*. You are welcome to browse the code but please don't use it or ask for support until this message is removed.
+*This is work in progress*. You are welcome to browse the code but please don't use it for anything serious or ask for support until this message is removed.
 
 ## Rationale ##
 * Gettext is a mature translation library, which has a javascript version [here](http://jsgettext.berlios.de/). It has been around for long enough that the PO files it uses are a standard for handling locale data. It also handles the multiple plural forms found in some languages better than some other translation libraries. However, gettext was originally a c library, and has a somewhat awkward API because of this. To perform a translation, you have to choose between 12 different functions, depending on the circumstances. Traveller replaces these with a single function ('t'), which takes an options object. You only need to provide the options keys you are using at a given point, and the rest will be filled in with sensible defaults.
