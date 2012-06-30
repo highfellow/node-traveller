@@ -7,7 +7,6 @@ exports ?= @traveller = {}
 exports.rootPath = './locales'
 exports.loader = null
 exports.format = 'json'
-exports.gettext = gettext
 
 # declare public methods.
 
@@ -20,22 +19,18 @@ exports.t = (msgid, opts, tokens) ->
   opts.plural ?= undefined
   opts.count ?= undefined
   opts.category ?= undefined
-  #console.log "opts, tokens:"
-  #console.log opts
-  #console.log tokens
-  trans = exports.gettext.dcnpgettext opts.domain, opts.context, msgid, opts.plural, opts.count, opts.category
+  trans = gettext.dcnpgettext opts.domain, opts.context, msgid, opts.plural, opts.count, opts.category
   if tokens
     # replace tokens.
     trans = printf trans, tokens
-  console.log "msgid: #{msgid}; trans: #{trans}"
   return trans
 
 # set options for automatic locale loading.
 exports.init = (rootPath, loader, format) ->
-  if format == 'json'
+  if (format == 'json' || format == 'po')
     exports.format=format
   else
-    throw new Error "Only json format supported at this time."
+    throw new Error "Unsupported message file format."
   if typeof loader == 'function'
     exports.loader=loader
   else
@@ -45,19 +40,17 @@ exports.init = (rootPath, loader, format) ->
 # load a language file for a locale
 exports.loadLocale = (locale,callback) ->
   localePath="#{exports.rootPath}/#{locale}/messages.#{exports.format}"
-  #console.log "parsed path: #{docPath}"
-  gtLoader=(cb)->
-    # loader function to pass to node-gettext.
-    # loadLanguageFile is expecting a function which passes JSON data to a callback. cb is the callback which it passes in.
-    console.log "called back. cb:"
-    console.log cb
-    exports.loader localePath, (json)->
-      console.log "json loaded"
-      cb(JSON.parse json)
-  exports.gettext.loadLanguageFile gtLoader, locale, callback
-
+  exports.loader localePath, (data)->
+    if (exports.format == 'json')
+      gettext.loadLanguageJSON JSON.parse(data), locale
+    else if (exports.format == 'po')
+      gettext.loadLanguagePO data, locale, 'messages'
+    return callback && callback()
+    
 # set a given locale.
 exports.setLocale = (locale) ->
   # TODO choose domain, set callback and do language fallbacks.
-  console.log "setting locale to: #{locale}"
-  exports.gettext.setlocale 'LC_ALL', locale
+  #console.log "gettext:"
+  #console.log gettext
+  #console.log "setting locale to: #{locale}"
+  gettext.setlocale 'LC_ALL', locale
