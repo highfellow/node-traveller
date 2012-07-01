@@ -51,7 +51,9 @@ exports.init = (rootPath, loader, format, pathSetter) ->
 
 # load a language file for a locale
 exports.loadLocale = (locale, domain, callback) ->
-  domain ?= "messages"
+  if (! callback?)
+    callback = domain
+    domain = "messages"
   localePath = exports.pathSetter locale, domain
   exports.loader localePath, (data) ->
     if (exports.format == 'json')
