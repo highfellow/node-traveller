@@ -13,13 +13,13 @@
   },
   "dependencies": {
     "gettext": "git://github.com/highfellow/node-gettext.git",
-    "printf": "~0.0.4"
+    "printf": "~0.0.4",
+    "coffee-script": "~1.2.0"
   },
   "scripts": {
     "postinstall": "coffee -c lib/traveller.coffee"
   },
   "devDependencies": {
-    "coffee-script": "~1.2.0"
   },
   "optionalDependencies": {}
 }
