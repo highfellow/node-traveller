@@ -17,9 +17,9 @@
   },
   "scripts": {
     "postinstall": "coffee -c lib/traveller.coffee"
-  }
+  },
   "devDependencies": {
     "coffee-script": "~1.2.0"
-    },
+  },
   "optionalDependencies": {}
 }
