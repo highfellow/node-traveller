@@ -24,14 +24,14 @@ exports.t = (msgids, opts, tokens) ->
   opts.context ?= undefined
   opts.count ?= undefined
   opts.category ?= undefined
-  if (typeof msgids) == string
+  if (typeof msgids) == 'string'
     msgid = msgids
     plural = undefined
   else
     msgid = msgids[0]
     plural = msgids[1]
   trans = gettext.dcnpgettext opts.domain, opts.context, msgid, plural, opts.count, opts.category
-  if tokens
+  if tokens?
     # replace tokens.
     trans = printf trans, tokens
   return trans
@@ -51,8 +51,9 @@ exports.init = (rootPath, loader, format, pathSetter) ->
 
 # load a language file for a locale
 exports.loadLocale = (locale, domain, callback) ->
+  domain ?= "messages"
   localePath = exports.pathSetter locale, domain
-  exports.loader localePath, (data)->
+  exports.loader localePath, (data) ->
     if (exports.format == 'json')
       gettext.loadLanguageJSON JSON.parse(data), locale
     else if (exports.format == 'po')
@@ -62,7 +63,4 @@ exports.loadLocale = (locale, domain, callback) ->
 # set a given locale.
 exports.setLocale = (locale) ->
   # TODO choose domain, set callback and do language fallbacks.
-  #console.log "gettext:"
-  #console.log gettext
-  #console.log "setting locale to: #{locale}"
   gettext.setlocale 'LC_ALL', locale
