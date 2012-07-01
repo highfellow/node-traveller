@@ -1,7 +1,7 @@
 {
   "author": "Andrew Baxter <andy@highfellow.org> (http://highfellow.org)",
   "name": "traveller",
-  "description": "Javascript-ish translation module based around node-gettext.",
+  "description": "Translation and string substitution wrapper module for node, based around node-gettext but providing a cleaner and more javascript-ish interface.",
   "version": "0.0.1",
   "repository": {
     "type": "git",
