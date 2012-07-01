@@ -4,7 +4,7 @@
   "description": "Javascript-ish translation module based around node-gettext.",
   "version": "0.0.1",
   "repository": {
-    "type": "git"
+    "type": "git",
     "url": "https://github.com/highfellow/node-traveller.git"
   },
   "main": "lib/traveller.js",
@@ -12,7 +12,7 @@
     "node": "~0.6.10"
   },
   "dependencies": {
-    "gettext": "git://highfellow/node-gettext.git",
+    "gettext": "git://github.com/highfellow/node-gettext.git",
     "printf": "~0.0.4"
   },
   "scripts": {
