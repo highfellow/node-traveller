@@ -4,9 +4,12 @@ printf=require 'printf'
 exports ?= @traveller = {}
 
 # set public properties.
-exports.rootPath = './locales'
-exports.loader = null
-exports.format = 'json'
+exports.rootPath = './locales' # default root path for locale files.
+exports.loader = null # a function which returns file data from a path.
+exports.format = 'json' # format for message files
+exports.pathSetter = (locale, domain) ->
+  # function to generate a message file path from the locale and domain.
+  return "#{exports.rootPath}/#{locale}/#{domain}.#{exports.format}"
 
 # declare public methods.
 
@@ -34,7 +37,8 @@ exports.t = (msgids, opts, tokens) ->
   return trans
 
 # set options for automatic locale loading.
-exports.init = (rootPath, loader, format) ->
+exports.init = (rootPath, loader, format, pathSetter) ->
+  exports.pathSetter ?= pathSetter
   if (format == 'json' || format == 'po')
     exports.format = format
   else
@@ -47,7 +51,7 @@ exports.init = (rootPath, loader, format) ->
 
 # load a language file for a locale
 exports.loadLocale = (locale, domain, callback) ->
-  localePath = "#{exports.rootPath}/#{locale}/#{domain}.#{exports.format}"
+  localePath = exports.pathSetter locale, domain
   exports.loader localePath, (data)->
     if (exports.format == 'json')
       gettext.loadLanguageJSON JSON.parse(data), locale
