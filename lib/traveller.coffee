@@ -11,15 +11,23 @@ exports.format = 'json'
 # declare public methods.
 
 # call node-gettext in a js/coffee like way.
-exports.t = (msgid, opts, tokens) ->
+# msgids: either a msgid string, or an array containing the singular and plural string where there is a plural. 
+# opts: an object containing domain, context, count, and category if appropriate.
+# tokens: an object where the keys are tokens to be replaced with their values after translation, in the form: '%(token)format' where 'format' is a printf style formatting instruction.
+exports.t = (msgids, opts, tokens) ->
   # set defaults
   opts ?= {}
   opts.domain ?= null
   opts.context ?= undefined
-  opts.plural ?= undefined
   opts.count ?= undefined
   opts.category ?= undefined
-  trans = gettext.dcnpgettext opts.domain, opts.context, msgid, opts.plural, opts.count, opts.category
+  if (typeof msgids) == string
+    msgid = msgids
+    plural = undefined
+  else
+    msgid = msgids[0]
+    plural = msgids[1]
+  trans = gettext.dcnpgettext opts.domain, opts.context, msgid, plural, opts.count, opts.category
   if tokens
     # replace tokens.
     trans = printf trans, tokens
@@ -28,23 +36,23 @@ exports.t = (msgid, opts, tokens) ->
 # set options for automatic locale loading.
 exports.init = (rootPath, loader, format) ->
   if (format == 'json' || format == 'po')
-    exports.format=format
+    exports.format = format
   else
     throw new Error "Unsupported message file format."
   if typeof loader == 'function'
-    exports.loader=loader
+    exports.loader = loader
   else
     throw new Error "'loader' must be a function taking a pathname and a callback"
-  exports.rootPath=rootPath
+  exports.rootPath = rootPath
 
 # load a language file for a locale
-exports.loadLocale = (locale,callback) ->
-  localePath="#{exports.rootPath}/#{locale}/messages.#{exports.format}"
+exports.loadLocale = (locale, domain, callback) ->
+  localePath = "#{exports.rootPath}/#{locale}/#{domain}.#{exports.format}"
   exports.loader localePath, (data)->
     if (exports.format == 'json')
       gettext.loadLanguageJSON JSON.parse(data), locale
     else if (exports.format == 'po')
-      gettext.loadLanguagePO data, locale, 'messages'
+      gettext.loadLanguagePO data, locale, domain
     return callback && callback()
     
 # set a given locale.

@@ -16,8 +16,5 @@ At the moment, Traveller uses a [slightly adapted version](https://github.com/hi
 
 * init(rootPath, loader, format) - initialise the library for automatic loading of locale files. Loader(localePath,callback) should be a function which returns loaded locale data from a root path set in 'rootPath'. LocalePath is constructed by adding '/locale/messages.format' to rootPath. Format is either 'po' or 'json' for a PO file or JSON object.
 * loadLocale(locale,callback) - load a locale file automatically, using the options set in 'init'.
-* loadLocaleData(fileData, locale, callback) - load raw locale data manually.
 * setLocale(locale) - set the current locale.
-* t(string, {options...}, {tokens}) - translate a string. Options are: domain, context, plural, count, and category (see the [gnu gettext](http://www.gnu.org/software/gettext/) documentation for details). Tokens contains tokens to replace in the translated string.
-
-
+* t(msgid | \[msgid, msgid\_plural\], {domain: msg\_domain, context: msg\_context, count: plural\_count, category: msg\_category}, {token: replacement, ...}) - translate a string. See the [gnu gettext](http://www.gnu.org/software/gettext/) documentation for details of what the options mean. Tokens are tokens to replace in the message string after translation.
