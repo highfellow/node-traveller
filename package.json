@@ -18,7 +18,7 @@
   },
   "keywords": ["gettext", "translation", "localization", "i18n"],
   "scripts": {
-    "postinstall": "coffee -c lib/traveller.coffee"
+    "postinstall": "coffee -c src/traveller.coffee -o lib"
   },
   "devDependencies": {
   },
