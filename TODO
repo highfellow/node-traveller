@@ -1,0 +1,1 @@
+* Don't re-load a locale file if it's already been loaded.
